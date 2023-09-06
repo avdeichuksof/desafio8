@@ -37,9 +37,9 @@ class ProductController{
                 links.push({label: i, href: 'http://localhost:8080/home/?page=' + i})
             }
             
-            const user = req.session
+            const user = req.session.user
 
-            return res.render('index', {products: products, pagination: rest, links, user: req.session})
+            return res.render('index', {products: products, pagination: rest, links, user: user})
         }catch(err){
             console.log(err)
         }
@@ -48,9 +48,10 @@ class ProductController{
     getProductsByIdController = async (req, res) => {
         try{
             const id = req.params.id
+            const user = req.session.user
             const productFound = await productService.getProductsByIdService(id)
             console.log("producto: ", productFound)
-            res.render('productView', {product: productFound})
+            res.render('productView', {product: product, user: user})
         }catch(err){
             res.status(400).send({error: err})
         }
